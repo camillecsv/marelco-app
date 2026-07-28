@@ -1,0 +1,213 @@
+/* EcoKo — design tokens & base */
+:root{
+  --bg: #FAF6EF;
+  --bg-elev: #FFFFFF;
+  --ink: #1F1A14;
+  --ink-2: #4A4035;
+  --ink-3: #5F6B62;
+  --line: #E5DDCC;
+  --line-2: #EFE8D9;
+  --primary: #1F5D4C;
+  --primary-2: #2F7A65;
+  --primary-soft: #E2EEE8;
+  --accent: #E8743F;
+  --accent-soft: #FBE6D9;
+  --gold: #D9A441;
+  --gold-soft: #F6E8C4;
+  --danger: #B5482E;
+  --warning: #C7821A;
+  --muted: #9A8E7A;
+
+  --serif: 'Instrument Serif', 'Cormorant Garamond', Georgia, serif;
+  --sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --mono: 'JetBrains Mono', ui-monospace, Menlo, monospace;
+}
+[data-theme="dark"]{
+  --bg: #14110C;
+  --bg-elev: #1F1A14;
+  --ink: #F4ECDC;
+  --ink-2: #C9BEA8;
+  --ink-3: #5F6B62;
+  --line: #2A241B;
+  --line-2: #221C14;
+  --primary-soft: #1A2E27;
+  --accent-soft: #2E1B12;
+  --gold-soft: #2E2412;
+}
+
+/* tenants — only primary/accent vary; rest of system holds */
+[data-tenant="moresco"]{ --primary:#1F5D4C; --primary-2:#2F7A65; --accent:#E8743F; --primary-soft:#E2EEE8; }
+[data-tenant="siargao"]{ --primary:#1A4E70; --primary-2:#2A6E94; --accent:#E89A3F; --primary-soft:#E0EAF1; }
+[data-tenant="beneco"]{  --primary:#5A3A2A; --primary-2:#7A5440; --accent:#C25A3A; --primary-soft:#F0E5DA; }
+[data-tenant="utility"]{ --primary:#1A3D4D; --primary-2:#2A7F62; --accent:#E6950A; --accent-soft:#FEF3D0; --primary-soft:#E0EBF0; --bg:#FFFFFF; --bg-elev:#F4F7F6; --line:#E2E6EA; --line-2:#EDF0F3; --serif: 'IBM Plex Sans', system-ui, sans-serif; --sans: 'IBM Plex Sans', system-ui, sans-serif; --mono: 'IBM Plex Mono', ui-monospace, monospace; }
+[data-tenant="utility"] .serif{ font-family: 'IBM Plex Sans', system-ui, sans-serif; font-style: normal; font-weight: 700; letter-spacing: -0.01em; }
+[data-tenant="utility"] .amount{ font-family: 'IBM Plex Mono', ui-monospace, monospace; font-style: normal; font-weight: 600; letter-spacing: -0.01em; }
+[data-tenant="utility"] .eyebrow{ letter-spacing: 0.1em; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+[data-tenant="utility"] .btn-accent{ color: #1A3D4D; }
+[data-tenant="romelco"]{ --primary:#0E2A47; --primary-2:#1F66C2; --accent:#F4C842; --accent-soft:#FEF6D6; --primary-soft:#E4EBF3; --bg:#FFFFFF; --bg-elev:#F4F6F9; --line:#E2E6EA; --line-2:#EDF0F3; --serif: 'IBM Plex Sans', system-ui, sans-serif; --sans: 'IBM Plex Sans', system-ui, sans-serif; --mono: 'IBM Plex Mono', ui-monospace, monospace; }
+[data-tenant="romelco"] .serif{ font-family: 'IBM Plex Sans', system-ui, sans-serif; font-style: normal; font-weight: 700; letter-spacing: -0.01em; }
+[data-tenant="romelco"] .amount{ font-family: 'IBM Plex Mono', ui-monospace, monospace; font-style: normal; font-weight: 600; letter-spacing: -0.01em; }
+[data-tenant="romelco"] .eyebrow{ letter-spacing: 0.1em; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+[data-tenant="romelco"] .btn-accent{ color: #0E2A47; }
+
+[data-tenant="quezelco2"]{ --primary:#0E2A47; --primary-2:#1F66C2; --accent:#F4C842; --accent-soft:#FEF6D6; --primary-soft:#E4EBF3; --bg:#FFFFFF; --bg-elev:#F4F6F9; --line:#E2E6EA; --line-2:#EDF0F3; --serif: 'IBM Plex Sans', system-ui, sans-serif; --sans: 'IBM Plex Sans', system-ui, sans-serif; --mono: 'IBM Plex Mono', ui-monospace, monospace; }
+[data-tenant="quezelco2"] .serif{ font-family: 'IBM Plex Sans', system-ui, sans-serif; font-style: normal; font-weight: 700; letter-spacing: -0.01em; }
+[data-tenant="quezelco2"] .amount{ font-family: 'IBM Plex Mono', ui-monospace, monospace; font-style: normal; font-weight: 600; letter-spacing: -0.01em; }
+[data-tenant="quezelco2"] .eyebrow{ letter-spacing: 0.1em; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+[data-tenant="quezelco2"] .btn-accent{ color: #0E2A47; }
+
+[data-tenant="ormeco"]{ --primary:#1A4D22; --primary-2:#2D8A3E; --accent:#F5CC00; --accent-soft:#FEF9CC; --primary-soft:#DFF0E4; --bg:#FFFFFF; --bg-elev:#F4F9F5; --line:#D5E5D8; --line-2:#E6F0E7; --serif: 'IBM Plex Sans', system-ui, sans-serif; --sans: 'IBM Plex Sans', system-ui, sans-serif; --mono: 'IBM Plex Mono', ui-monospace, monospace; }
+[data-tenant="ormeco"] .serif{ font-family: 'IBM Plex Sans', system-ui, sans-serif; font-style: normal; font-weight: 700; letter-spacing: -0.01em; }
+[data-tenant="ormeco"] .amount{ font-family: 'IBM Plex Sans', system-ui, sans-serif; font-style: normal; font-weight: 700; letter-spacing: -0.03em; }
+[data-tenant="ormeco"] .eyebrow{ letter-spacing: 0.1em; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+[data-tenant="ormeco"] .btn-accent{ color: #1A4D22; }
+
+[data-tenant="dasureco"]{ --primary:#B08A00; --primary-2:#D4A800; --accent:#F4C200; --accent-soft:#FFF9D6; --primary-soft:#FFF5C0; --bg:#FFFFFF; --bg-elev:#FFFDF0; --line:#E8D87A; --line-2:#F0E8A8; --serif: 'IBM Plex Sans', system-ui, sans-serif; --sans: 'IBM Plex Sans', system-ui, sans-serif; --mono: 'IBM Plex Mono', ui-monospace, monospace; }
+[data-tenant="dasureco"] .serif{ font-family: 'IBM Plex Sans', system-ui, sans-serif; font-style: normal; font-weight: 700; letter-spacing: -0.01em; }
+[data-tenant="dasureco"] .amount{ font-family: 'IBM Plex Mono', ui-monospace, monospace; font-style: normal; font-weight: 600; letter-spacing: -0.01em; }
+[data-tenant="dasureco"] .eyebrow{ letter-spacing: 0.1em; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
+[data-tenant="dasureco"] .btn-accent{ color: #1A2600; }
+
+*{ box-sizing: border-box; }
+html, body{ margin:0; padding:0; background: #2A241B; color: var(--ink); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+button{ font-family: inherit; }
+
+/* phone screen container — matches Android frame inner viewport */
+.eko-screen{
+  width: 100%;
+  min-height: 100%;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 1rem;
+  line-height: 1.45;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+.eko-screen *{ box-sizing: border-box; }
+
+/* ── primitives ─────────────────────────────────────── */
+.serif{ font-family: var(--serif); font-style: italic; letter-spacing: -0.01em; }
+.mono { font-family: var(--mono); }
+.eyebrow{ font-size: 0.75rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-3); font-weight: 500; }
+
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  height: 48px; padding: 0 20px; border-radius: 999px; border: 0;
+  font-weight: 600; font-size: 1rem; cursor: pointer;
+  transition: transform .08s ease, background .15s;
+}
+.btn:active{ transform: scale(0.98); }
+.btn-primary{ background: var(--primary); color: #FAF6EF; }
+.btn-accent { background: var(--accent); color: #FFF7F1; }
+.btn-ghost  { background: transparent; color: var(--ink); border: 1px solid var(--line); }
+.btn-block  { width: 100%; }
+
+.card{ background: var(--bg-elev); border: 1px solid var(--line); border-radius: 18px; }
+
+.divider{ height:1px; background: var(--line); margin: 12px 0; }
+
+/* status pill */
+.pill{ display:inline-flex; align-items:center; gap:6px; padding: 4px 10px; border-radius: 999px; font-size: 0.875rem; font-weight: 500; }
+.pill-ok  { background: var(--primary-soft); color: var(--primary); }
+.pill-warn{ background: var(--gold-soft);    color: var(--warning); }
+.pill-bad { background: #F7DAD0;             color: var(--danger); }
+[data-theme="dark"] .pill-bad{ background:#3A2017; color:#E8A892; }
+
+/* offline banner */
+.offline-banner{
+  background: #2A241B; color: #F4ECDC; font-size: 0.875rem; padding: 8px 16px;
+  display: flex; align-items: center; gap: 8px; justify-content: center;
+}
+.offline-banner.twoG{ background: var(--gold-soft); color: var(--warning); }
+
+/* tab bar */
+.tabbar{
+  display:flex; align-items:center; justify-content:space-around;
+  padding: 8px 4px 12px;
+  border-top: 1px solid var(--line);
+  background: var(--bg);
+}
+.tabbar button{
+  appearance:none; border:0; background:transparent; color: var(--ink-3);
+  display:flex; flex-direction:column; align-items:center; gap:3px;
+  padding: 6px 10px; min-width: 56px; cursor:pointer;
+  font-size: 0.75rem; letter-spacing: 0.02em; font-weight: 500;
+}
+.tabbar button.active{ color: var(--primary); }
+.tabbar button .dot{ width: 38px; height: 22px; border-radius: 999px; display:flex; align-items:center; justify-content:center; transition: background .15s; }
+.tabbar button.active .dot{ background: var(--primary-soft); }
+
+/* scroll-y body inside screen */
+.scroll{ flex: 1; overflow-y: auto; overscroll-behavior: contain; }
+.scroll::-webkit-scrollbar{ width:0; }
+
+/* fade transitions */
+.screen-enter{ animation: fadeUp .28s ease both; }
+@keyframes fadeUp{ from{ opacity:0; transform: translateY(6px);} to{ opacity:1; transform:none;} }
+
+/* shimmer for placeholder image blocks */
+.placeholder{
+  background:
+    repeating-linear-gradient(135deg,
+      var(--line-2) 0 8px,
+      var(--bg) 8px 16px);
+  border-radius: 14px;
+  display:flex; align-items:center; justify-content:center;
+  font-family: var(--mono); font-size: 0.75rem; color: var(--ink-3);
+}
+
+/* big numeric */
+.amount{ font-family: var(--serif); font-style: italic; font-weight: 400; letter-spacing: -0.02em; }
+
+/* link-ish */
+.linkish{ color: var(--primary); font-weight: 600; cursor: pointer; }
+
+/* small chevron row */
+.row{
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 14px 16px; gap: 12px; cursor: pointer;
+}
+.row + .row{ border-top: 1px solid var(--line); }
+
+/* sheet (bottom modal) */
+.sheet-backdrop{
+  position:absolute; inset:0; background: rgba(20,17,12,0.4); z-index: 50;
+  display:flex; align-items:flex-end; justify-content: center;
+  animation: fade .2s ease;
+}
+@keyframes fade{ from{opacity:0} to{opacity:1} }
+.sheet{
+  width: 100%; max-width: 480px; background: var(--bg);
+  border-radius: 22px 22px 0 0; padding: 8px 0 18px;
+  animation: sheetUp .28s cubic-bezier(.2,.8,.2,1);
+  max-height: 80%;
+  display:flex; flex-direction: column;
+}
+@keyframes sheetUp{ from{ transform: translateY(40px); opacity:0;} to{ transform:none; opacity:1;} }
+.sheet-handle{ width: 40px; height: 4px; background: var(--line); border-radius: 999px; margin: 8px auto 4px; }
+
+/* segmented chip strip */
+.chips{ display:flex; gap: 8px; overflow-x: auto; padding: 2px; }
+.chips::-webkit-scrollbar{ display:none; }
+.chip{
+  flex: 0 0 auto; padding: 6px 12px; border-radius: 999px;
+  font-size: 0.875rem; font-weight: 500; color: var(--ink-2);
+  background: transparent; border: 1px solid var(--line); cursor: pointer;
+  white-space: nowrap;
+}
+.chip.active{ background: var(--ink); color: var(--bg); border-color: var(--ink); }
+
+/* mini-bar for usage */
+.bar{ background: var(--line-2); border-radius: 4px; overflow:hidden; height: 6px; }
+.bar > span{ display:block; height: 100%; background: var(--primary); border-radius: 4px; }
+
+/* connectivity dot */
+.ind-dot{ width: 6px; height: 6px; border-radius: 50%; background: var(--primary); display:inline-block; }
+.ind-dot.off{ background: var(--ink-3); }
+.ind-dot.warn{ background: var(--gold); }
+
+/* hide scrollbar but keep scrollability */
+.hide-scrollbar{ scrollbar-width: none; -ms-overflow-style: none; }
+.hide-scrollbar::-webkit-scrollbar{ display: none; }
