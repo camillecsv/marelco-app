@@ -1770,6 +1770,7 @@ function BizPayScreen({ accounts, activeIdx, nav, onPaid }) {
   ];
   const channels = groups.flatMap(g => g.items);
   const [picked, setPicked] = useState('gcash');
+  const [pickOpen, setPickOpen] = useState(false);
   const [qrMode, setQrMode] = useState('show');   /* show | scan */
   const [scan, setScan] = useState('idle');       /* idle | scanning | found */
   const sel   = channels.find(c => c.id === picked);
@@ -1790,32 +1791,48 @@ function BizPayScreen({ accounts, activeIdx, nav, onPaid }) {
           </div>
         </div>
 
-        <div className="eyebrow" style={{ marginTop:22 }}>Choose payment method</div>
-        {groups.map(g => (
-          <div key={g.title}>
-            <div style={{ fontSize:'0.75rem', fontWeight:700, color:'var(--ink-3)', textTransform:'uppercase', letterSpacing:'0.06em', margin:'14px 0 6px' }}>{g.title}</div>
-            <div className="card">
-              {g.items.map((c, i) => (
-                <label key={c.id} className="row" style={{ borderTop: i ? '1px solid var(--line)' : 'none' }}>
-                  <div style={{ display:'flex', gap:12, alignItems:'center', minWidth:0 }}>
-                    <span style={{ width:18, height:18, borderRadius:999, border:`2px solid ${picked===c.id ? 'var(--primary)' : 'var(--line)'}`, display:'flex', alignItems:'center', justifyContent:'center', flex:'0 0 auto' }}>
-                      {picked===c.id && <span style={{ width:8, height:8, background:'var(--primary)', borderRadius:999 }}/>}
-                    </span>
-                    <div style={{ minWidth:0 }}>
-                      <div style={{ fontWeight:600, fontSize:'1rem', display:'flex', alignItems:'center', gap:8 }}>
+        <div className="eyebrow" style={{ marginTop:22, marginBottom:8 }}>Payment method</div>
+        <button onClick={()=>setPickOpen(o=>!o)} style={{
+          width:'100%', textAlign:'left', padding:'13px 14px', borderRadius:14, cursor:'pointer', fontFamily:'inherit',
+          border:'1px solid '+(pickOpen?'var(--primary)':'var(--line)'), background:'var(--bg-elev)',
+          display:'flex', alignItems:'center', gap:12,
+        }}>
+          <span style={{ flex:1, minWidth:0 }}>
+            <span style={{ display:'flex', alignItems:'center', gap:8, fontWeight:600, fontSize:'1rem', color:'var(--ink)' }}>
+              {sel ? sel.name : 'Select a payment method'}
+              {sel && sel.tag && <span className="pill pill-ok" style={{ fontSize:'0.75rem' }}>{sel.tag}</span>}
+            </span>
+            {sel && <span style={{ display:'block', fontSize:'0.875rem', color:'var(--ink-3)', marginTop:1 }}>{sel.sub}</span>}
+          </span>
+          <span style={{ fontSize:'0.875rem', color:sel&&sel.fee?'var(--accent)':'var(--ink-3)', flexShrink:0 }}>{sel&&sel.fee?'+₱'+sel.fee:'No fee'}</span>
+          <span style={{ flexShrink:0, transition:'transform .15s', transform:pickOpen?'rotate(90deg)':'none', color:'var(--ink-3)', display:'flex' }}><I.Chevron size={18}/></span>
+        </button>
+
+        {pickOpen && (
+          <div className="card" style={{ marginTop:8, padding:'4px 0', overflow:'hidden' }}>
+            {groups.map(g => (
+              <div key={g.title}>
+                <div style={{ fontSize:'0.6875rem', fontWeight:700, color:'var(--ink-3)', textTransform:'uppercase', letterSpacing:'0.08em', padding:'10px 14px 4px' }}>{g.title}</div>
+                {g.items.map(c => (
+                  <button key={c.id} onClick={()=>{ setPicked(c.id); setScan('idle'); setPickOpen(false); }} style={{
+                    width:'100%', textAlign:'left', padding:'11px 14px', cursor:'pointer', fontFamily:'inherit', border:0,
+                    background:picked===c.id?'var(--primary-soft)':'transparent', display:'flex', alignItems:'center', gap:12,
+                  }}>
+                    <div style={{ flex:1, minWidth:0 }}>
+                      <div style={{ fontWeight:600, fontSize:'0.9375rem', display:'flex', alignItems:'center', gap:8, color:'var(--ink)' }}>
                         {c.name}
                         {c.tag && <span className="pill pill-ok" style={{ fontSize:'0.75rem' }}>{c.tag}</span>}
                       </div>
-                      <div style={{ fontSize:'0.875rem', color:'var(--ink-3)' }}>{c.sub}</div>
+                      <div style={{ fontSize:'0.8125rem', color:'var(--ink-3)' }}>{c.sub}</div>
                     </div>
-                  </div>
-                  <div style={{ fontSize:'0.875rem', color:c.fee?'var(--accent)':'var(--ink-3)' }}>{c.fee?'+₱'+c.fee:'No fee'}</div>
-                  <input type="radio" name="bpay" checked={picked===c.id} onChange={()=>{setPicked(c.id); setScan('idle');}} style={{ display:'none' }}/>
-                </label>
-              ))}
-            </div>
+                    <span style={{ fontSize:'0.875rem', color:c.fee?'var(--accent)':'var(--ink-3)', flexShrink:0 }}>{c.fee?'+₱'+c.fee:'No fee'}</span>
+                    {picked===c.id && <span style={{ color:'var(--primary)', flexShrink:0, display:'flex' }}><I.Check size={16}/></span>}
+                  </button>
+                ))}
+              </div>
+            ))}
           </div>
-        ))}
+        )}
 
         {/* QR Ph panel */}
         {picked==='qrph' && (
@@ -3670,6 +3687,7 @@ function QRPhCode({ size = 172, seed = 'QRPH' }) {
 function SAPay({ nav, data }) {
   const amount = data.bill.amount;
   const [method, setMethod] = useState(null);
+  const [methodOpen, setMethodOpen] = useState(false);
   const [busy, setBusy] = useState(false);
   const [done, setDone] = useState(false);
   const [qrMode, setQrMode] = useState('show');   /* show | scan */
@@ -3707,32 +3725,50 @@ function SAPay({ nav, data }) {
           <div style={{ fontSize:'0.875rem', opacity:.85, marginTop:4 }}>Account {BRAND.demoAccountNo} · due {data.bill.dueDate}</div>
         </div>
 
-        {groups.map(g=>(
-          <div key={g.title}>
-            <div className="eyebrow" style={{ marginTop:18, marginBottom:8 }}>{g.title}</div>
-            <div style={{ display:'flex', flexDirection:'column', gap:8 }}>
-              {g.items.map(m=>(
-                <button key={m.id} onClick={()=>setMethod(m.id)} disabled={m.low} style={{
-                  textAlign:'left', padding:'13px 14px', borderRadius:14, cursor:m.low?'not-allowed':'pointer', fontFamily:'inherit',
-                  border:'1px solid '+(method===m.id?'var(--primary)':'var(--line)'),
-                  background:method===m.id?'var(--primary-soft)':'var(--bg-elev)', opacity:m.low?.55:1,
-                  display:'flex', alignItems:'center', gap:12,
-                }}>
-                  <span style={{ width:20, height:20, borderRadius:'50%', flexShrink:0, display:'flex', alignItems:'center', justifyContent:'center',
-                                 border:'2px solid '+(method===m.id?'var(--primary)':'var(--line)'), background:method===m.id?'var(--primary)':'transparent' }}>
-                    {method===m.id && <span style={{ width:8, height:8, borderRadius:'50%', background:'#fff' }}/>}
-                  </span>
-                  <span style={{ fontSize:'1.25rem', flexShrink:0 }}>{m.badge}</span>
-                  <span style={{ flex:1, minWidth:0 }}>
-                    <span style={{ display:'block', fontWeight:600, fontSize:'1rem', color:'var(--ink)' }}>{m.name}</span>
-                    <span style={{ display:'block', fontSize:'0.875rem', color:'var(--ink-3)', marginTop:1 }}>{m.sub}</span>
-                  </span>
-                  <span style={{ fontSize:'0.75rem', color:m.fee?'var(--warning)':'var(--primary)', fontWeight:600, flexShrink:0 }}>{m.fee?'+₱'+m.fee:'Free'}</span>
-                </button>
-              ))}
-            </div>
+        {/* Payment method — collapsed dropdown */}
+        <div className="eyebrow" style={{ marginTop:18, marginBottom:8 }}>Payment method</div>
+        <button onClick={()=>setMethodOpen(o=>!o)} style={{
+          width:'100%', textAlign:'left', padding:'13px 14px', borderRadius:14, cursor:'pointer', fontFamily:'inherit',
+          border:'1px solid '+(methodOpen?'var(--primary)':'var(--line)'), background:'var(--bg-elev)',
+          display:'flex', alignItems:'center', gap:12,
+        }}>
+          {sel ? (<>
+            <span style={{ fontSize:'1.25rem', flexShrink:0 }}>{sel.badge}</span>
+            <span style={{ flex:1, minWidth:0 }}>
+              <span style={{ display:'block', fontWeight:600, fontSize:'1rem', color:'var(--ink)' }}>{sel.name}</span>
+              <span style={{ display:'block', fontSize:'0.875rem', color:'var(--ink-3)', marginTop:1 }}>{sel.sub}</span>
+            </span>
+            <span style={{ fontSize:'0.75rem', color:sel.fee?'var(--warning)':'var(--primary)', fontWeight:600, flexShrink:0 }}>{sel.fee?'+₱'+sel.fee:'Free'}</span>
+          </>) : (
+            <span style={{ flex:1, fontWeight:600, fontSize:'1rem', color:'var(--ink-3)' }}>Select a payment method</span>
+          )}
+          <span style={{ flexShrink:0, transition:'transform .15s', transform:methodOpen?'rotate(90deg)':'none', color:'var(--ink-3)', display:'flex' }}><I.Chevron size={18}/></span>
+        </button>
+
+        {methodOpen && (
+          <div className="card" style={{ marginTop:8, padding:'4px 0', overflow:'hidden' }}>
+            {groups.map(g=>(
+              <div key={g.title}>
+                <div style={{ fontSize:'0.6875rem', fontWeight:700, color:'var(--ink-3)', textTransform:'uppercase', letterSpacing:'0.08em', padding:'10px 14px 4px' }}>{g.title}</div>
+                {g.items.map(m=>(
+                  <button key={m.id} onClick={()=>{ if(m.low) return; setMethod(m.id); setMethodOpen(false); }} disabled={m.low} style={{
+                    width:'100%', textAlign:'left', padding:'11px 14px', cursor:m.low?'not-allowed':'pointer', fontFamily:'inherit',
+                    border:0, background:method===m.id?'var(--primary-soft)':'transparent', opacity:m.low?.55:1,
+                    display:'flex', alignItems:'center', gap:12,
+                  }}>
+                    <span style={{ fontSize:'1.25rem', flexShrink:0 }}>{m.badge}</span>
+                    <span style={{ flex:1, minWidth:0 }}>
+                      <span style={{ display:'block', fontWeight:600, fontSize:'0.9375rem', color:'var(--ink)' }}>{m.name}</span>
+                      <span style={{ display:'block', fontSize:'0.8125rem', color:'var(--ink-3)', marginTop:1 }}>{m.sub}</span>
+                    </span>
+                    <span style={{ fontSize:'0.75rem', color:m.fee?'var(--warning)':'var(--primary)', fontWeight:600, flexShrink:0 }}>{m.fee?'+₱'+m.fee:'Free'}</span>
+                    {method===m.id && <span style={{ color:'var(--primary)', flexShrink:0, display:'flex' }}><I.Check size={16}/></span>}
+                  </button>
+                ))}
+              </div>
+            ))}
           </div>
-        ))}
+        )}
 
         {/* QR Ph panel */}
         {method==='qrph' && (
