@@ -1343,7 +1343,7 @@ const BUSINESS_DATA = {
   company: { name: 'Santos & Co. Properties', id: 'BIZ-00456' },
   accounts: [
     {
-      no: 'BIZ-001', label: 'Main Office', address: 'Brgy. Anahao, Odiongan',
+      no: 'BIZ-001', label: 'Main Office', address: 'Brgy. Isok I, Boac',
       kwh: 312, amount: 3812.40, dueDate: 'May 20, 2026', paid: false,
       period: 'Mar 15 – Apr 14, 2026',
       lines: [
@@ -1367,7 +1367,7 @@ const BUSINESS_DATA = {
       ],
     },
     {
-      no: 'BIZ-002', label: 'Warehouse — [Location]', address: '[Address, City]',
+      no: 'BIZ-002', label: 'Warehouse — Sta. Cruz', address: 'Brgy. Poblacion, Sta. Cruz',
       kwh: 187, amount: 2290.15, dueDate: 'May 20, 2026', paid: false,
       period: 'Mar 15 – Apr 14, 2026',
       lines: [
@@ -1391,7 +1391,7 @@ const BUSINESS_DATA = {
       ],
     },
     {
-      no: 'BIZ-003', label: 'Branch — Santa Fe', address: 'Brgy. Poblacion, Santa Fe',
+      no: 'BIZ-003', label: 'Branch — Gasan', address: 'Brgy. Bognuyan, Gasan',
       kwh: 95, amount: 1165.50, dueDate: 'May 22, 2026', paid: true,
       period: 'Mar 15 – Apr 14, 2026',
       lines: [
@@ -1443,6 +1443,13 @@ function BizHomeScreen({ accounts, company, activeIdx, setActiveIdx, nav }) {
   const totalDue = accounts.filter(a=>!a.paid).reduce((s,a)=>s+a.amount, 0);
   const dueCount = accounts.filter(a=>!a.paid).length;
   const allPaid = dueCount === 0;
+  /* Portfolio analytics across all metered sites */
+  const totalKwh    = accounts.reduce((s,a)=>s+a.kwh, 0);
+  const totalBilled = accounts.reduce((s,a)=>s+a.amount, 0);
+  const prevKwh     = accounts.reduce((s,a)=>{ const m=(a.yoyMonthly||[]).find(x=>x.month==='Mar'); return s+(m && m.current!=null ? m.current : 0); }, 0);
+  const momPct      = prevKwh ? Math.round((totalKwh-prevKwh)/prevKwh*100) : 0;
+  const maxKwh      = Math.max(...accounts.map(a=>a.kwh), 1);
+  const peso        = n => n.toLocaleString(undefined,{minimumFractionDigits:0, maximumFractionDigits:0});
   return (
     <div className="eko-screen screen-enter">
       {/* Top bar */}
@@ -1469,7 +1476,7 @@ function BizHomeScreen({ accounts, company, activeIdx, setActiveIdx, nav }) {
             position:'relative', overflow:'hidden',
           }}>
             <div style={{ position:'absolute', right:-30, top:-30, opacity:0.15 }}>
-              <I.Leaf size={180} stroke={allPaid ? 'var(--primary)' : '#FAF6EF'}/>
+              <I.Bolt size={170} stroke={allPaid ? 'var(--primary)' : '#FAF6EF'}/>
             </div>
             <div className="eyebrow" style={{ color: allPaid ? 'var(--primary)' : 'rgba(250,246,239,0.65)', letterSpacing:'0.1em' }}>
               All accounts · {allPaid ? 'all settled' : `${dueCount} bill${dueCount > 1 ? 's' : ''} due`}
@@ -1505,8 +1512,10 @@ function BizHomeScreen({ accounts, company, activeIdx, setActiveIdx, nav }) {
           <div className="eyebrow" style={{ marginBottom:10 }}>Quick actions</div>
           <div style={{ display:'grid', gridTemplateColumns:'1fr 1fr', gap:10 }}>
             {[
-              { i:<I.Bill size={20}/>,   label:'My accounts',   sub:`${accounts.length} active`, go:'accounts' },
-              { i:<I.Outage size={20}/>, label:'Report outage', sub:'Get help fast',             go:'outage'   },
+              { i:<I.Bill size={20}/>,   label:'My accounts',      sub:`${accounts.length} sites`,      go:'accounts' },
+              { i:<I.Spark size={20}/>,  label:'Usage & analytics', sub:'Track energy spend',           go:'energy'   },
+              { i:<I.Outage size={20}/>, label:'Report outage',    sub:'Get help fast',                go:'outage'   },
+              { i:<I.Chat size={20}/>,   label:'Business support', sub:'Commercial desk',              go:'service'  },
             ].map((a, idx) => (
               <button key={idx} onClick={()=>nav(a.go)} style={{
                 appearance:'none', border:'1px solid var(--line)', background:'var(--bg-elev)',
@@ -1520,6 +1529,71 @@ function BizHomeScreen({ accounts, company, activeIdx, setActiveIdx, nav }) {
                 </div>
               </button>
             ))}
+          </div>
+        </div>
+
+        {/* Sites / branches overview */}
+        <div style={{ padding:'22px 18px 0' }}>
+          <div style={{ display:'flex', alignItems:'baseline', justifyContent:'space-between', marginBottom:10 }}>
+            <div className="eyebrow">Your sites · {accounts.length}</div>
+            <button onClick={()=>nav('accounts')} style={{ appearance:'none', border:0, background:'transparent', color:'var(--primary)', fontWeight:700, fontSize:'0.75rem', cursor:'pointer', fontFamily:'inherit' }}>Manage →</button>
+          </div>
+          <div className="card" style={{ overflow:'hidden' }}>
+            {accounts.map((a, i) => (
+              <button key={a.no} onClick={()=>{ setActiveIdx(i); nav('bill'); }} style={{
+                width:'100%', appearance:'none', border:0, borderTop:i?'1px solid var(--line)':'none', background:'transparent',
+                display:'flex', alignItems:'center', gap:12, padding:'13px 14px', cursor:'pointer', fontFamily:'inherit', textAlign:'left',
+              }}>
+                <span style={{ width:38, height:38, borderRadius:10, background:'var(--primary-soft)', color:'var(--primary)', display:'flex', alignItems:'center', justifyContent:'center', flexShrink:0 }}><I.Coop size={18}/></span>
+                <div style={{ flex:1, minWidth:0 }}>
+                  <div style={{ fontWeight:600, fontSize:'0.9375rem', color:'var(--ink)', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{a.label}</div>
+                  <div className="mono" style={{ fontSize:'0.75rem', color:'var(--ink-3)', marginTop:1 }}>{a.no} · {a.kwh} kWh</div>
+                </div>
+                <div style={{ textAlign:'right', flexShrink:0, marginRight:2 }}>
+                  <div className="mono" style={{ fontWeight:700, fontSize:'0.875rem', color:'var(--ink)' }}>₱{a.amount.toFixed(2)}</div>
+                  {a.paid
+                    ? <span style={{ display:'inline-flex', alignItems:'center', gap:3, fontSize:'0.6875rem', fontWeight:700, color:'var(--accent)', marginTop:2 }}><I.Check size={11}/> Paid</span>
+                    : <span style={{ display:'inline-block', fontSize:'0.6875rem', fontWeight:700, color:'#B5301A', marginTop:2 }}>Due {a.dueDate.replace(', 2026','')}</span>}
+                </div>
+                <I.Chevron size={16}/>
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Portfolio usage & spend */}
+        <div style={{ padding:'22px 18px 0' }}>
+          <div style={{ display:'flex', alignItems:'baseline', justifyContent:'space-between', marginBottom:10 }}>
+            <div className="eyebrow">This billing period</div>
+            <button onClick={()=>nav('energy')} style={{ appearance:'none', border:0, background:'transparent', color:'var(--primary)', fontWeight:700, fontSize:'0.75rem', cursor:'pointer', fontFamily:'inherit' }}>View analytics →</button>
+          </div>
+          <div className="card" style={{ padding:16 }}>
+            <div style={{ display:'flex', gap:14 }}>
+              <div style={{ flex:1 }}>
+                <div style={{ fontSize:'0.75rem', color:'var(--ink-3)' }}>Total consumption</div>
+                <div className="amount" style={{ fontSize:'1.5rem', lineHeight:1.1, marginTop:2 }}>{totalKwh.toLocaleString()} <span style={{ fontSize:'0.875rem', color:'var(--ink-3)' }}>kWh</span></div>
+              </div>
+              <div style={{ flex:1, borderLeft:'1px solid var(--line)', paddingLeft:14 }}>
+                <div style={{ fontSize:'0.75rem', color:'var(--ink-3)' }}>Billed this period</div>
+                <div className="amount" style={{ fontSize:'1.5rem', lineHeight:1.1, marginTop:2 }}>₱{peso(totalBilled)}</div>
+              </div>
+            </div>
+            <div style={{ display:'flex', alignItems:'center', gap:6, marginTop:12, fontSize:'0.8125rem', color: momPct>0 ? '#B5301A' : 'var(--accent)' }}>
+              {momPct>0 ? <I.ArrowUp size={14}/> : <I.ArrowDn size={14}/>}
+              <span style={{ fontWeight:700 }}>{Math.abs(momPct)}% {momPct>0 ? 'higher' : 'lower'}</span>
+              <span style={{ color:'var(--ink-3)' }}>vs. last month · all sites</span>
+            </div>
+            <div style={{ marginTop:14, display:'flex', flexDirection:'column', gap:9 }}>
+              {accounts.map(a => (
+                <div key={a.no} style={{ display:'flex', alignItems:'center', gap:10 }}>
+                  <div style={{ width:104, flexShrink:0, fontSize:'0.75rem', color:'var(--ink-2)', whiteSpace:'nowrap', overflow:'hidden', textOverflow:'ellipsis' }}>{a.label}</div>
+                  <div style={{ flex:1, height:8, borderRadius:999, background:'var(--primary-soft)', overflow:'hidden' }}>
+                    <div style={{ width:(a.kwh/maxKwh*100)+'%', height:'100%', borderRadius:999, background:'var(--primary)' }}/>
+                  </div>
+                  <div className="mono" style={{ width:58, textAlign:'right', flexShrink:0, fontSize:'0.75rem', color:'var(--ink-2)' }}>{a.kwh} kWh</div>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
 
@@ -4464,7 +4538,7 @@ const PAGE_LABELS = {
 const NAV_PILLS = [
   {id:'signin',             label:'🔑 Sign In'},
   {id:'register',           label:'📝 Register'},
-  {id:'dashboard',          label:'📱 EcoKo App'},
+  {id:'dashboard',          label:'📱 MARELCO App'},
   {id:'business-dashboard', label:'🏢 Biz Dashboard'},
 ];
 

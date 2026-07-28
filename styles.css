@@ -43,7 +43,7 @@
 [data-tenant="utility"] .serif{ font-family: 'IBM Plex Sans', system-ui, sans-serif; font-style: normal; font-weight: 700; letter-spacing: -0.01em; }
 [data-tenant="utility"] .amount{ font-family: 'IBM Plex Mono', ui-monospace, monospace; font-style: normal; font-weight: 600; letter-spacing: -0.01em; }
 [data-tenant="utility"] .eyebrow{ letter-spacing: 0.1em; font-family: 'IBM Plex Sans', system-ui, sans-serif; }
-[data-tenant="utility"] .btn-accent{ color: #1A3D4D; }
+[data-tenant="utility"] .btn-accent{ color: #FFF7F1; }
 [data-tenant="romelco"]{ --primary:#0E2A47; --primary-2:#1F66C2; --accent:#F4C842; --accent-soft:#FEF6D6; --primary-soft:#E4EBF3; --bg:#FFFFFF; --bg-elev:#F4F6F9; --line:#E2E6EA; --line-2:#EDF0F3; --serif: 'IBM Plex Sans', system-ui, sans-serif; --sans: 'IBM Plex Sans', system-ui, sans-serif; --mono: 'IBM Plex Mono', ui-monospace, monospace; }
 [data-tenant="romelco"] .serif{ font-family: 'IBM Plex Sans', system-ui, sans-serif; font-style: normal; font-weight: 700; letter-spacing: -0.01em; }
 [data-tenant="romelco"] .amount{ font-family: 'IBM Plex Mono', ui-monospace, monospace; font-style: normal; font-weight: 600; letter-spacing: -0.01em; }
