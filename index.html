@@ -435,8 +435,11 @@ function Logo({ size=36, white=false }) {
   if(!LOGO){
     return <div style={{width:size,height:size,borderRadius:'50%',background:white?'rgba(255,255,255,0.18)':C.ocean,color:'#fff',display:'flex',alignItems:'center',justifyContent:'center',fontWeight:700,fontSize:Math.round(size*0.38),flexShrink:0,letterSpacing:'-0.02em'}}>{BRAND.shortName.slice(0,2)}</div>;
   }
-  return <img src={LOGO} onError={e=>{if(e.currentTarget.src!==LOGO_FB)e.currentTarget.src=LOGO_FB;}}
-    alt={BRAND.shortName} style={{display:'block',height:Math.round(size*0.82),width:'auto',maxWidth:size*4.4,objectFit:'contain',flexShrink:0,filter:white?'brightness(0) invert(1)':'none'}} />;
+  const img = <img src={LOGO} onError={e=>{if(e.currentTarget.src!==LOGO_FB)e.currentTarget.src=LOGO_FB;}}
+    alt={BRAND.shortName} style={{display:'block',height:Math.round(size*0.82),width:'auto',maxWidth:size*4.4,objectFit:'contain',flexShrink:0}} />;
+  /* On dark/blue surfaces show the full-colour logo on a white chip (keeps the badge legible). */
+  if(white) return <span style={{display:'inline-flex',alignItems:'center',background:'#fff',borderRadius:8,padding:'4px 8px',flexShrink:0}}>{img}</span>;
+  return img;
 }
 
 function Hotline() {
