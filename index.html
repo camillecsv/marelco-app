@@ -1496,7 +1496,7 @@ function BizHomeScreen({ accounts, company, activeIdx, setActiveIdx, nav }) {
             </div>
             {!allPaid && (
               <div style={{ display:'flex', gap:10, marginTop:14 }}>
-                <button className="btn btn-accent" style={{ flex:1 }} onClick={()=>nav('pay-all')}>
+                <button className="btn" style={{ flex:1, background:'#fff', color:'var(--primary)' }} onClick={()=>nav('pay-all')}>
                   <I.Bolt size={16}/> Pay all {dueCount > 1 ? `(${dueCount})` : ''} · ₱{totalDue.toFixed(2)}
                 </button>
                 <button className="btn btn-ghost" style={{ background:'rgba(250,246,239,0.12)', color:'#FAF6EF', border:0 }} onClick={()=>nav('accounts')}>
